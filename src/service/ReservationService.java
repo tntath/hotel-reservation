@@ -57,7 +57,7 @@ public class ReservationService {
      */
     public Collection<IRoom> findARoom(Date checkInDate, Date checkOutDate) {
         List<IRoom> availableRooms = new LinkedList<>(mapOfRooms.values());
-        
+
         for (Reservation reservation : listOfReservations) {
             if (checkInDate == reservation.getCheckInDate()) {
                 availableRooms.remove(reservation.getRoom());
