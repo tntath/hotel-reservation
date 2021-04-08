@@ -26,6 +26,8 @@ public class ReservationService {
     }
 
     public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date ckeckOutDate) {
+        //check if the customer exists!
+
         Reservation reservation = new Reservation(customer, room, checkInDate, ckeckOutDate);
         listOfReservations.add(reservation);
         return reservation;
@@ -35,7 +37,7 @@ public class ReservationService {
         List<Reservation> customerReservations = new ArrayList<>();
 
         for (Reservation reservation : listOfReservations) {
-            if (reservation.getCustomer().getEmail() == customer.getEmail()) {
+            if (reservation.getCustomer().getEmail().equals(customer.getEmail())) {
                 customerReservations.add(reservation);
             }
         }
@@ -54,12 +56,8 @@ public class ReservationService {
      * @return a list of Rooms available for the selected dates
      */
     public Collection<IRoom> findARoom(Date checkInDate, Date checkOutDate) {
-        List<IRoom> availableRooms = new LinkedList<>();
-
-        for (IRoom room : mapOfRooms.values()) {
-            availableRooms.add(room);
-        }
-
+        List<IRoom> availableRooms = new LinkedList<>(mapOfRooms.values());
+        
         for (Reservation reservation : listOfReservations) {
             if (checkInDate == reservation.getCheckInDate()) {
                 availableRooms.remove(reservation.getRoom());
