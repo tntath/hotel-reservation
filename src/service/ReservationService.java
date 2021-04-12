@@ -5,6 +5,7 @@ import model.IRoom;
 import model.Reservation;
 
 import java.util.*;
+import java.time.LocalDate;
 
 public class ReservationService {
 
@@ -25,7 +26,7 @@ public class ReservationService {
         return mapOfRooms.values();
     }
 
-    public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date ckeckOutDate) {
+    public Reservation reserveARoom(Customer customer, IRoom room, LocalDate checkInDate, LocalDate ckeckOutDate) {
         //check if the customer exists!
 
         Reservation reservation = new Reservation(customer, room, checkInDate, ckeckOutDate);
@@ -55,7 +56,7 @@ public class ReservationService {
      * @param checkOutDate the date for checking out
      * @return a list of Rooms available for the selected dates
      */
-    public Collection<IRoom> findARoom(Date checkInDate, Date checkOutDate) {
+    public Collection<IRoom> findARoom(LocalDate checkInDate, LocalDate checkOutDate) {
         List<IRoom> availableRooms = new LinkedList<>(mapOfRooms.values());
 
         for (Reservation reservation : listOfReservations) {

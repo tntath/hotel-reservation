@@ -8,8 +8,8 @@ import service.ReservationService;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
+import java.time.LocalDate;
 
 /*
     The The HotelResource should have little to no behavior contained
@@ -34,7 +34,7 @@ public class HotelResource {
         return reservationService.getARoom(roomNumber);
     }
 
-    public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) {
+    public Reservation bookARoom(String customerEmail, IRoom room, LocalDate checkInDate, LocalDate checkOutDate) {
         Customer customer = customerService.getCustomer(customerEmail);
         return reservationService.reserveARoom(customer, room, checkInDate, checkOutDate);
     }
@@ -44,7 +44,7 @@ public class HotelResource {
         return reservationService.getCustomersReservation(customer);
     }
 
-    public Collection<IRoom> findARoom(Date checkIn, Date checkOut) {
+    public Collection<IRoom> findARoom(LocalDate checkIn, LocalDate checkOut) {
         return reservationService.findARoom(checkIn, checkOut);
     }
 
