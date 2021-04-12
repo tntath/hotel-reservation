@@ -4,6 +4,7 @@ import api.AdminResource;
 import api.HotelResource;
 import model.Customer;
 import model.IRoom;
+import model.Reservation;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -11,18 +12,15 @@ import java.util.*;
 
 public class MainMenu {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         HotelResource hotelResource = HotelResource.getInstance();
         AdminResource adminResource = AdminResource.getInstance();
-        boolean programRunning = true;
-        String customerEmail = null;
+        //boolean programRunning = true;
 
         System.out.println("Hello and welcome to the best exotic Marigold hotel!\n");
-        while (programRunning) {
-
-            selectOption(customerEmail, hotelResource, adminResource);
-
-
-        }
+        System.out.println("Please enter your email");
+        String customerEmail = scanner.nextLine();
+        selectOption(customerEmail, hotelResource, adminResource);
 
 
     }
@@ -54,7 +52,7 @@ public class MainMenu {
                 break;
             case 2:
                 if (customerExists) {
-                    // checkMyReservations(hotelResource, customerEmail);
+                    //add code
                 } else {
                     System.out.println("Please create an account first\n");
                     selectOption(customerEmail, hotelResource, adminResource);
@@ -141,20 +139,22 @@ public class MainMenu {
         String datePattern = "dd-MM-yyyy";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(datePattern);
 
+        //get the check in date and check out date from the user
         List<LocalDate> desiredDates = scanCheckInDates(formatter, datePattern);
         LocalDate checkInDate = desiredDates.iterator().next();
         LocalDate checkOutDate = desiredDates.iterator().next();
 
+        //get a list with all the available rooms for these dates
         Collection<IRoom> availableRooms = hotelResource.findARoom(checkInDate, checkOutDate);
+
+        //Show the available rooms to the user and proceed with the reservation
         if (availableRooms.isEmpty()) {
             System.out.println("There are no available rooms for these dates");
-
             //add seven days to the search
             checkInDate = checkInDate.plusDays(7);
             checkOutDate = checkOutDate.plusDays(7);
             // find a Room for the new dates
             Collection<IRoom> availableRoomsWeekLater = hotelResource.findARoom(checkInDate, checkOutDate);
-
             //restart the process if no available rooms are found or show the available ones for the new search
             if (availableRoomsWeekLater.isEmpty()) {
                 System.out.println("And unfortunately there are no available rooms a week later, please choose other dates");
@@ -164,33 +164,52 @@ public class MainMenu {
                 System.out.println("New Check in Date: " + checkInDate.format(formatter));
                 System.out.println("New Check Out Date: " + checkOutDate.format(formatter));
                 System.out.println("Should we proceed with these dates? (Yes/No answer)");
-                UserAnswer userAnswer = scanUserAnswer();
-                if (userAnswer == UserAnswer.YES) {
-                    System.out.println("The available rooms for the new dates are: ");
-                    for (IRoom room : availableRoomsWeekLater) {
-                        System.out.println(room);
-                    }
-                    //scanRoomForReservation;
+                UserAnswer dateConfirmation = scanUserAnswer();
+                if (dateConfirmation == UserAnswer.YES) {
+                    makeAReservation(hotelResource, customerEmail, checkInDate, checkOutDate, availableRoomsWeekLater);
 
-                    //hotelResource.bookARoom()
-
-
-                } else if (userAnswer == UserAnswer.NO) {
+                } else if (dateConfirmation == UserAnswer.NO) {
                     System.out.println("Please select new Check In and Check Out dates.");
                     findAndReserveARoom(hotelResource, customerEmail);
                 }
-
             }
+        } else {
+            makeAReservation(hotelResource, customerEmail, checkInDate, checkOutDate, availableRooms);
         }
+    }
+
+    /**
+     * Confirms a reservation with the user and adds the entry in the database.
+     *
+     * @param hotelResource  the Hotel Resource instance of the API
+     * @param customerEmail  the current customer email that requests the reservation
+     * @param checkInDate    the check in date
+     * @param checkOutDate   the check out date
+     * @param availableRooms a li
+     */
+    private static void makeAReservation(HotelResource hotelResource, String customerEmail, LocalDate checkInDate, LocalDate checkOutDate, Collection<IRoom> availableRooms) {
+        System.out.println("The available rooms for the requested dates are: ");
+
         for (IRoom room : availableRooms) {
             System.out.println(room);
         }
+        System.out.println("Should we proceed with these dates? (Yes/No answer)");
+        UserAnswer reservationConfirmation = scanUserAnswer();
 
-
-        System.out.println("Please sele");
-
-
+        if (reservationConfirmation == UserAnswer.YES) {
+            //Get selected room from user
+            System.out.println("Please select a room number");
+            String roomNumberSelected = scanRoomNumber();
+            //Book a reservation for the selected room and dates
+            IRoom roomSelected = hotelResource.getRoom(roomNumberSelected);
+            Reservation customerReservation = hotelResource.bookARoom(customerEmail, roomSelected, checkInDate, checkOutDate);
+            System.out.println("Your reservation is: " + customerReservation);
+        } else {
+            System.out.println("Please select new Check In and Check Out dates.");
+            findAndReserveARoom(hotelResource, customerEmail);
+        }
     }
+
 
     /**
      * A method that gets the Check In Dates and Checkout Dates for a reservation
@@ -292,6 +311,12 @@ public class MainMenu {
         System.out.println("Email: " + userEmail);
 
         return new String[]{userEmail, firstName, lastName};
+
+    }
+
+    private static String scanRoomNumber() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
 
     }
 
