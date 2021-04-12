@@ -13,19 +13,19 @@ import java.util.*;
 public class MainMenu {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        HotelResource hotelResource = HotelResource.getInstance();
-        AdminResource adminResource = AdminResource.getInstance();
         //boolean programRunning = true;
 
         System.out.println("Hello and welcome to the best exotic Marigold hotel!\n");
         System.out.println("Please enter your email");
         String customerEmail = scanner.nextLine();
-        selectOption(customerEmail, hotelResource, adminResource);
+        selectOption(customerEmail);
 
 
     }
 
-    public static void selectOption(String customerEmail, HotelResource hotelResource, AdminResource adminResource) {
+    public static void selectOption(String customerEmail) {
+        HotelResource hotelResource = HotelResource.getInstance();
+        AdminResource adminResource = AdminResource.getInstance();
         boolean customerExists = false;
 
         //check if customer exists in database
@@ -45,50 +45,48 @@ public class MainMenu {
                     findAndReserveARoom(hotelResource, customerEmail);
                 } else {
                     System.out.println("Please create an account first\n");
-                    selectOption(customerEmail, hotelResource, adminResource);
+                    selectOption(customerEmail);
                 }
                 break;
             case 2:
                 if (customerExists) {
                     Collection<Reservation> allCustomerReservations = hotelResource.getCustomersReservations(customerEmail);
-                    if(allCustomerReservations.isEmpty()){
+                    if (allCustomerReservations.isEmpty()) {
                         System.out.println("There are no current reservations");
-                    }else {
+                    } else {
                         System.out.println("Your reservations are:");
-                        for(Reservation reservation:allCustomerReservations){
+                        for (Reservation reservation : allCustomerReservations) {
                             System.out.println(reservation);
                         }
                     }
-
                 } else {
                     System.out.println("Please create an account first\n");
-                    selectOption(customerEmail, hotelResource, adminResource);
+                    selectOption(customerEmail);
                 }
                 break;
             case 3:
                 if (customerExists) {
                     System.out.println("Email already in use, please select another option");
-                    selectOption(customerEmail, hotelResource, adminResource);
+                    selectOption(customerEmail);
                 } else {
                     //ask for the customer details and create an entry in the database
                     String[] newUserDetails = scanCustomerDetails();
                     hotelResource.createACustomer(newUserDetails[0], newUserDetails[1], newUserDetails[2]);
-
                     //redirect the user to select an option from Main Menu
-                    selectOption(newUserDetails[0], hotelResource, adminResource);
+                    selectOption(newUserDetails[0]);
                 }
                 break;
             case 4:
                 System.out.println("Case 4");
+                //open the admin menu
                 break;
             case 5:
-                System.out.println("Case 5");
+                //exit program
+                System.exit(0);
                 break;
             default:
-                System.out.println("Ending program");
+                System.out.println("Default option");
         }
-
-
     }
 
 
@@ -165,7 +163,7 @@ public class MainMenu {
             //restart the process if no available rooms are found or show the available ones for the new search
             if (availableRoomsWeekLater.isEmpty()) {
                 System.out.println("And unfortunately there are no available rooms a week later, please choose other dates");
-                findAndReserveARoom(hotelResource, customerEmail);
+                selectOption(customerEmail);
             } else {
                 System.out.println("However, there are available rooms a week later");
                 System.out.println("New Check in Date: " + checkInDate.format(formatter));
@@ -177,7 +175,7 @@ public class MainMenu {
 
                 } else if (dateConfirmation == UserAnswer.NO) {
                     System.out.println("Please select new Check In and Check Out dates.");
-                    findAndReserveARoom(hotelResource, customerEmail);
+                    selectOption(customerEmail);
                 }
             }
         } else {
