@@ -24,7 +24,7 @@ public class MainMenu {
 
         switch (userInput) {
             case 1:
-                findARoom();
+                findAndReserveARoom();
             case 2:
                 System.out.println("Case 2");
                 break;
@@ -80,21 +80,28 @@ public class MainMenu {
 
     }
 
-    public static void findARoom() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public static void findAndReserveARoom() {
+        String datePattern = "dd-MM-yyyy";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(datePattern);
 
-        System.out.println("Please enter the check in date in dd-mm-yyyy format");
-        LocalDate checkInDate = scanDate(formatter);
+        System.out.println("Please enter the check in date in \"" + datePattern + "\" format");
+        LocalDate checkInDate = scanDate(formatter, datePattern);
         System.out.println("Check In: " + checkInDate.format(formatter));
 
-        System.out.println("Please enter the check out date in dd-mm-yyyy format");
-        LocalDate checkOutDate = scanDate(formatter);
+        System.out.println("Please enter the check out date in \"" + datePattern + "\" format");
+        LocalDate checkOutDate = scanDate(formatter, datePattern);
         System.out.println("Check Out: " + checkOutDate.format(formatter));
 
 
     }
 
-    public static LocalDate scanDate(DateTimeFormatter formatter){
+    /**
+     * Uses the scanner to get a date input from the user.
+     * @param datePattern A string with the pattern of the date
+     * @param formatter the formatter of the date used
+     * @return a LocalDate object obtained from the user.
+     */
+    public static LocalDate scanDate(DateTimeFormatter formatter, String datePattern) {
         Scanner scanner = new Scanner(System.in);
         LocalDate inputDate = LocalDate.now();
         boolean wrongInput;
@@ -105,7 +112,7 @@ public class MainMenu {
                 wrongInput = false;
             } catch (Exception ex) {
                 ex.getLocalizedMessage();
-                System.out.println("Please enter the correct date format \"dd-mm-yyyy\"");
+                System.out.println("Please enter the correct date format \"" + datePattern + "\"");
                 wrongInput = true;
             }
         } while (wrongInput);
