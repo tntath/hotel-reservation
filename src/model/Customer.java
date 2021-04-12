@@ -2,7 +2,7 @@ package model;
 
 import java.util.regex.Pattern;
 
-public class Customer {
+public class Customer implements  Comparable<Customer>{
     private String firstName;
     private String lastName;
     private String email;
@@ -16,6 +16,10 @@ public class Customer {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+    }
+
+    public  int compareTo(Customer customer){
+        return email.compareTo(customer.getEmail());
     }
 
     public String getFirstName() {
