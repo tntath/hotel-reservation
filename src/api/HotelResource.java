@@ -21,6 +21,7 @@ public class HotelResource {
     private CustomerService customerService = CustomerService.getInstance();
     private ReservationService reservationService = ReservationService.getInstance();
 
+
     public Customer getCustomer(String email) {
         return customerService.getCustomer(email);
 
