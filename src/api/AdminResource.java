@@ -13,7 +13,7 @@ public class AdminResource {
     private CustomerService customerService = CustomerService.getInstance();
     private ReservationService reservationService = ReservationService.getInstance();
 
-    public AdminResource getInstance(){
+    public static AdminResource getInstance(){
         return adminResource;
     }
 
