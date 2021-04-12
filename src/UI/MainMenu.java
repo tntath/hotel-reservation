@@ -17,7 +17,7 @@ public class MainMenu {
         String customerEmail = null;
 
         System.out.println("Hello and welcome to the best exotic Marigold hotel!\n");
-        while(programRunning){
+        while (programRunning) {
 
             selectOption(customerEmail, hotelResource, adminResource);
 
@@ -25,24 +25,17 @@ public class MainMenu {
         }
 
 
-
-
-
-
-
-
     }
 
-    public static void selectOption(String customerEmail, HotelResource hotelResource, AdminResource adminResource){
+    public static void selectOption(String customerEmail, HotelResource hotelResource, AdminResource adminResource) {
         boolean customerExists;
 
         //check if customer exists in database
-        if( hotelResource.getCustomer(customerEmail) != null){
+        if (hotelResource.getCustomer(customerEmail) != null) {
             customerExists = true;
-        }else {
+        } else {
             customerExists = false;
         }
-
 
         // get the user Main Menu selection
 
@@ -52,32 +45,29 @@ public class MainMenu {
 
         switch (userSelection) {
             case 1:
-                if(customerExists) {
+                if (customerExists) {
                     findAndReserveARoom(hotelResource, customerEmail);
-                }
-                else {
+                } else {
                     System.out.println("Please create an account first\n");
                     selectOption(customerEmail, hotelResource, adminResource);
                 }
                 break;
             case 2:
-                if(customerExists) {
-               // checkMyReservations(hotelResource, customerEmail);
-            }
-                else {
-                System.out.println("Please create an account first\n");
-                selectOption(customerEmail, hotelResource, adminResource);
-            }
-            break;
-            case 3:
-                if(customerExists) {
-                    System.out.println("Email already in use, please select another option");
+                if (customerExists) {
+                    // checkMyReservations(hotelResource, customerEmail);
+                } else {
+                    System.out.println("Please create an account first\n");
                     selectOption(customerEmail, hotelResource, adminResource);
                 }
-                else {
+                break;
+            case 3:
+                if (customerExists) {
+                    System.out.println("Email already in use, please select another option");
+                    selectOption(customerEmail, hotelResource, adminResource);
+                } else {
                     //ask for the customer details and create an entry in the database
                     String[] newUserDetails = scanCustomerDetails();
-                    hotelResource.createACustomer(newUserDetails[0], newUserDetails[1], newUserDetails[2] );
+                    hotelResource.createACustomer(newUserDetails[0], newUserDetails[1], newUserDetails[2]);
 
                     //redirect the user to select an option from Main Menu
                     selectOption(newUserDetails[0], hotelResource, adminResource);
@@ -142,8 +132,10 @@ public class MainMenu {
     }
 
     /**
+     * A method that finds a room for selected dates and proceeds to reserve them if the user decides
      *
-     * @param hotelResource
+     * @param hotelResource the hotelResource instance of the API
+     * @param customerEmail the email of the customer that makes the reservation
      */
     public static void findAndReserveARoom(HotelResource hotelResource, String customerEmail) {
         String datePattern = "dd-MM-yyyy";
@@ -154,7 +146,7 @@ public class MainMenu {
         LocalDate checkOutDate = desiredDates.iterator().next();
 
         Collection<IRoom> availableRooms = hotelResource.findARoom(checkInDate, checkOutDate);
-        if(availableRooms.isEmpty()){
+        if (availableRooms.isEmpty()) {
             System.out.println("There are no available rooms for these dates");
 
             //add seven days to the search
@@ -164,18 +156,18 @@ public class MainMenu {
             Collection<IRoom> availableRoomsWeekLater = hotelResource.findARoom(checkInDate, checkOutDate);
 
             //restart the process if no available rooms are found or show the available ones for the new search
-            if(availableRoomsWeekLater.isEmpty()){
+            if (availableRoomsWeekLater.isEmpty()) {
                 System.out.println("And unfortunately there are no available rooms a week later, please choose other dates");
                 findAndReserveARoom(hotelResource, customerEmail);
-            }else {
+            } else {
                 System.out.println("However, there are available rooms a week later");
                 System.out.println("New Check in Date: " + checkInDate.format(formatter));
                 System.out.println("New Check Out Date: " + checkOutDate.format(formatter));
                 System.out.println("Should we proceed with these dates? (Yes/No answer)");
-                UserAnswer userAnswer =  scanUserAnswer();
-                if(userAnswer == UserAnswer.YES){
+                UserAnswer userAnswer = scanUserAnswer();
+                if (userAnswer == UserAnswer.YES) {
                     System.out.println("The available rooms for the new dates are: ");
-                    for( IRoom room: availableRoomsWeekLater){
+                    for (IRoom room : availableRoomsWeekLater) {
                         System.out.println(room);
                     }
                     //scanRoomForReservation;
@@ -183,14 +175,14 @@ public class MainMenu {
                     //hotelResource.bookARoom()
 
 
-                }else if(userAnswer == UserAnswer.NO) {
+                } else if (userAnswer == UserAnswer.NO) {
                     System.out.println("Please select new Check In and Check Out dates.");
                     findAndReserveARoom(hotelResource, customerEmail);
                 }
 
             }
         }
-        for( IRoom room: availableRooms){
+        for (IRoom room : availableRooms) {
             System.out.println(room);
         }
 
@@ -201,10 +193,11 @@ public class MainMenu {
     }
 
     /**
+     * A method that gets the Check In Dates and Checkout Dates for a reservation
      *
-     * @return
+     * @return a List of two LocalDate objects (the chek in date and the check out date)
      */
-    public static List<LocalDate> scanCheckInDates(DateTimeFormatter formatter, String datePattern){
+    public static List<LocalDate> scanCheckInDates(DateTimeFormatter formatter, String datePattern) {
         List<LocalDate> desiredDates = new ArrayList<>();
 
         System.out.println("Please enter the check in date in \"" + datePattern + "\" format");
@@ -224,8 +217,9 @@ public class MainMenu {
 
     /**
      * Uses the scanner to get a date input from the user.
+     *
      * @param datePattern A string with the pattern of the date
-     * @param formatter the formatter of the date used
+     * @param formatter   the formatter of the date used
      * @return a LocalDate object obtained from the user.
      */
     public static LocalDate scanDate(DateTimeFormatter formatter, String datePattern) {
@@ -249,9 +243,10 @@ public class MainMenu {
 
     /**
      * Uses the scanner to convert the user input to the Enum UserAnswer class
+     *
      * @return the converted user answer to the Enum UserAnswer class
      */
-    public static UserAnswer scanUserAnswer(){
+    public static UserAnswer scanUserAnswer() {
         Scanner scanner = new Scanner(System.in);
         UserAnswer userAnswer = null;
 
@@ -274,10 +269,11 @@ public class MainMenu {
 
     /**
      * Scans the User's Details (email, First Name, Last Name)
+     *
      * @return An array of strings containing the email, the first name and last name of the user,
      * in this order (email, firstname, lastname)
      */
-    public static String[] scanCustomerDetails(){
+    public static String[] scanCustomerDetails() {
         Scanner scanner = new Scanner(System.in);
         String userEmail = null;
         String firstName = null;
