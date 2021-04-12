@@ -26,13 +26,11 @@ public class MainMenu {
     }
 
     public static void selectOption(String customerEmail, HotelResource hotelResource, AdminResource adminResource) {
-        boolean customerExists;
+        boolean customerExists = false;
 
         //check if customer exists in database
         if (hotelResource.getCustomer(customerEmail) != null) {
             customerExists = true;
-        } else {
-            customerExists = false;
         }
 
         // get the user Main Menu selection
@@ -52,7 +50,16 @@ public class MainMenu {
                 break;
             case 2:
                 if (customerExists) {
-                    //add code
+                    Collection<Reservation> allCustomerReservations = hotelResource.getCustomersReservations(customerEmail);
+                    if(allCustomerReservations.isEmpty()){
+                        System.out.println("There are no current reservations");
+                    }else {
+                        System.out.println("Your reservations are:");
+                        for(Reservation reservation:allCustomerReservations){
+                            System.out.println(reservation);
+                        }
+                    }
+
                 } else {
                     System.out.println("Please create an account first\n");
                     selectOption(customerEmail, hotelResource, adminResource);
