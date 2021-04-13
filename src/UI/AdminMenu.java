@@ -2,13 +2,20 @@ package UI;
 
 import api.AdminResource;
 import api.HotelResource;
+import model.Customer;
+import model.IRoom;
+import model.Reservation;
 
-import static UI.InputScan.scanIntegerInput;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import static UI.InputScan.*;
 import static UI.MainMenu.*;
 
 public class AdminMenu {
 
-    public static void selectAdminOption(String userEmail){
+    public static void selectAdminOption(String userEmail) {
         HotelResource hotelResource = HotelResource.getInstance();
         AdminResource adminResource = AdminResource.getInstance();
         boolean userIsAdmin = true;
@@ -29,36 +36,57 @@ public class AdminMenu {
         System.out.println("User Input: " + userSelection);
 
         // Give admin access only to certified users
-        if(userIsAdmin){
+        if (userIsAdmin) {
             System.out.println("User identified as admin, please proceed");
-        }else {
+        } else {
             System.out.println("User is not an admin, redirecting to Main Menu");
             userSelection = 5;
         }
 
         switch (userSelection) {
             case 1: //get all Customers
-
-
+                for (Customer customer : adminResource.getAllCustomers()) {
+                    System.out.println(customer);
+                }
                 break;
             case 2: // get all Rooms
-
+                for (IRoom room : adminResource.getAllRooms()) {
+                    System.out.println(room);
+                }
                 break;
             case 3: // get all Reservations
-
+                adminResource.displayAllReservations();
                 break;
             case 4: // Add A Room
-
+                adminResource.addRoom(addManyRooms());
                 break;
             case 5:
                 selectOption(userEmail);
+
         }
-
-
-
-
     }
 
+    /**
+     * A method that asks the admin user the details of the rooms he wishes to add.
+     *
+     * @return a list of IRoom objects
+     */
+    public static List<IRoom> addManyRooms() {
+        List<IRoom> allNewRooms = new ArrayList<>();
+        boolean addAnotherRoom = false;
+
+        do {
+            //call scanRoomDetails and add the room to the list
+            allNewRooms.add(scanRoomDetails());
+            //ask the user if he wishes to add another room
+            System.out.println("Would you like to add another room?");
+            if (scanUserAnswer() == UserAnswer.YES) {
+                addAnotherRoom = true;
+            }
+        } while (addAnotherRoom);
+
+        return allNewRooms;
+    }
 
 
 }
