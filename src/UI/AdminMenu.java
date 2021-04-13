@@ -31,26 +31,29 @@ public class AdminMenu {
 
         // Give admin access only to certified users
         if (userIsAdmin) {
-            System.out.println("User identified as admin, please proceed");
+            System.out.println("User identified as admin, please proceed\n");
         } else {
-            System.out.println("User is not an admin, redirecting to Main Menu");
+            System.out.println("User is not an admin, redirecting to Main Menu\n");
             userSelection = 5;
         }
 
         switch (userSelection) {
             case 1: //get all Customers
+                System.out.println("The current customers in database are:");
                 for (Customer customer : adminResource.getAllCustomers()) {
                     System.out.println(customer);
                 }
                 selectAdminOption(userEmail);
                 break;
             case 2: // get all Rooms
+                System.out.println("The current rooms in database are: ");
                 for (IRoom room : adminResource.getAllRooms()) {
                     System.out.println(room);
                 }
                 selectAdminOption(userEmail);
                 break;
             case 3: // get all Reservations
+                System.out.println("The current reservations in database are:");
                 adminResource.displayAllReservations();
                 selectAdminOption(userEmail);
                 break;
@@ -71,18 +74,16 @@ public class AdminMenu {
      */
     public static List<IRoom> addManyRooms() {
         List<IRoom> allNewRooms = new ArrayList<>();
-        boolean addAnotherRoom = false;
+        boolean addAnotherRoom;
 
         do {
             //call scanRoomDetails and add the room to the list
             allNewRooms.add(scanRoomDetails());
             //ask the user if he wishes to add another room
             System.out.println("Would you like to add another room?");
-            if (scanUserAnswer() == UserAnswer.YES) {
-                addAnotherRoom = true;
-            } else {
-                addAnotherRoom = false;
-            }
+
+            //ask user to add another room and update the addAnotherRoom value
+            addAnotherRoom = (scanUserAnswer() == UserAnswer.YES);
         } while (addAnotherRoom);
 
         return allNewRooms;
