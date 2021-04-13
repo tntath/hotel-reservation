@@ -1,16 +1,13 @@
 package UI;
 
-import api.AdminResource;
 import api.HotelResource;
-import model.Customer;
 import model.IRoom;
 import model.Reservation;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
 import static UI.InputScan.*;
+import static UI.AdminMenu.*;
 
 public class MainMenu {
 
@@ -23,7 +20,6 @@ public class MainMenu {
      */
     public static void selectOption(String customerEmail) {
         HotelResource hotelResource = HotelResource.getInstance();
-        AdminResource adminResource = AdminResource.getInstance();
         boolean customerExists = false;
 
         //check if customer exists in database
@@ -83,7 +79,8 @@ public class MainMenu {
             case 4:
                 System.out.println("Case 4");
                 //open the admin menu
-                break;
+                selectAdminOption(customerEmail);
+]                break;
             case 5:
                 //exit program
                 System.exit(0);
