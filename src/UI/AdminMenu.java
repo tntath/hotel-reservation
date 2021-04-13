@@ -80,6 +80,8 @@ public class AdminMenu {
             System.out.println("Would you like to add another room?");
             if (scanUserAnswer() == UserAnswer.YES) {
                 addAnotherRoom = true;
+            } else {
+                addAnotherRoom = false;
             }
         } while (addAnotherRoom);
 
