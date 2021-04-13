@@ -1,22 +1,16 @@
 package UI;
 
 import api.AdminResource;
-import api.HotelResource;
 import model.Customer;
 import model.IRoom;
-import model.Reservation;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
 import static UI.InputScan.*;
 import static UI.MainMenu.*;
 
 public class AdminMenu {
 
     public static void selectAdminOption(String userEmail) {
-        HotelResource hotelResource = HotelResource.getInstance();
         AdminResource adminResource = AdminResource.getInstance();
         boolean userIsAdmin = true;
 
