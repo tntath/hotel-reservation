@@ -13,17 +13,7 @@ import java.util.*;
 import static UI.InputScan.*;
 
 public class MainMenu {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        //boolean programRunning = true;
 
-        System.out.println("Hello and welcome to the best exotic Marigold hotel!\n");
-        System.out.println("Please enter your email");
-        String customerEmail = scanner.nextLine();
-        selectOption(customerEmail);
-
-
-    }
 
     /**
      * A method that creates the  Main Menu of the UI. It checks if a customer exists in the
@@ -41,6 +31,15 @@ public class MainMenu {
             customerExists = true;
         }
         // get the user Main Menu selection
+        System.out.println("-----------------------------------------------");
+        System.out.println("Please select one option:");
+        System.out.println("""
+                1. Find and reserve a room\s
+                2. See my reservations
+                3. Create an account\s
+                4. Admin
+                5.Exit""");
+
         int userSelection = scanIntegerInput(1, 5);
         System.out.println("User Input: " + userSelection);
         // Switch expression for the 5 different option a user can select
