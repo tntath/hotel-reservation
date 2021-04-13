@@ -1,5 +1,10 @@
 package UI;
 
+import model.FreeRoom;
+import model.IRoom;
+import model.Room;
+import model.RoomType;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -148,6 +153,7 @@ public class InputScan {
 
     /**
      * Scans the next String (which should be the room number of a room
+     *
      * @return a Strinng containing the room number of a room
      */
     public static String scanRoomNumber() {
@@ -156,5 +162,41 @@ public class InputScan {
 
     }
 
+    /**
+     * Asks the admin user provide details of a new Room scans the user input.
+     * @return An IRoom object (either Room or FreeRoom, depending on the user's input.
+     */
+    public static IRoom scanRoomDetails() {
+        Scanner scanner = new Scanner(System.in);
+        IRoom newRoom = null;
+        String roomNumber = null;
+        Double roomPrice = null;
+        RoomType roomType = null;
 
+        boolean wrongInput;
+        do {
+            try {
+                System.out.println("Please insert the Room number");
+                roomNumber = scanner.nextLine();
+                System.out.println("Please insert the room price, or enter 0 if it is a Free room");
+                roomPrice = scanner.nextDouble();
+                System.out.println("Please insert the room type (Single or Double)");
+                String typeAnswer = scanner.nextLine().toUpperCase();
+                roomType = RoomType.valueOf(typeAnswer);
+                wrongInput = false;
+            } catch (Exception ex) {
+                ex.getLocalizedMessage();
+                System.out.println("Please enter the correct input types (Room number -> A string, " +
+                        "Room price -> A number, Room type-> Either Single or Double");
+                wrongInput = true;
+            }
+        } while (wrongInput);
+
+        if (roomPrice > 0) {
+            newRoom = new Room(roomNumber, roomPrice, roomType);
+        } else {
+            newRoom = new FreeRoom(roomNumber, roomType);
+        }
+        return newRoom;
+    }
 }
