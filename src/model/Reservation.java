@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Reservation {
     Customer customer;
@@ -45,6 +46,19 @@ public class Reservation {
 
     public void setCheckOutDate(LocalDate checkOutDate) {
         this.checkOutDate = checkOutDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Reservation)) return false;
+        Reservation that = (Reservation) o;
+        return getCustomer().equals(that.getCustomer()) && getRoom().equals(that.getRoom()) && getCheckInDate().equals(that.getCheckInDate()) && getCheckOutDate().equals(that.getCheckOutDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCustomer(), getRoom(), getCheckInDate(), getCheckOutDate());
     }
 
     @Override
