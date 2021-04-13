@@ -180,6 +180,7 @@ public class InputScan {
                 roomNumber = scanner.nextLine();
                 System.out.println("Please insert the room price, or enter 0 if it is a Free room");
                 roomPrice = scanner.nextDouble();
+                scanner.nextLine();
                 System.out.println("Please insert the room type (Single or Double)");
                 String typeAnswer = scanner.nextLine().toUpperCase();
                 roomType = RoomType.valueOf(typeAnswer);
