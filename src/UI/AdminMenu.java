@@ -42,17 +42,21 @@ public class AdminMenu {
                 for (Customer customer : adminResource.getAllCustomers()) {
                     System.out.println(customer);
                 }
+                selectAdminOption(userEmail);
                 break;
             case 2: // get all Rooms
                 for (IRoom room : adminResource.getAllRooms()) {
                     System.out.println(room);
                 }
+                selectAdminOption(userEmail);
                 break;
             case 3: // get all Reservations
                 adminResource.displayAllReservations();
+                selectAdminOption(userEmail);
                 break;
             case 4: // Add A Room
                 adminResource.addRoom(addManyRooms());
+                selectAdminOption(userEmail);
                 break;
             case 5:
                 selectOption(userEmail);
