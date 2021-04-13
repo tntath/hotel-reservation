@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class ReservationService {
 
     private Map<String, IRoom> mapOfRooms = new HashMap<>();
-    private List<Reservation> listOfReservations = new ArrayList<>();
+    private List<Reservation> listOfReservations = new ArrayList<Reservation>();
     private static final ReservationService reservationService = new ReservationService();
 
     public void addRoom(IRoom room) {
@@ -29,6 +29,7 @@ public class ReservationService {
     public Reservation reserveARoom(Customer customer, IRoom room, LocalDate checkInDate, LocalDate ckeckOutDate) {
         //check if the customer exists!
 
+        //check if reservation exists
         Reservation reservation = new Reservation(customer, room, checkInDate, ckeckOutDate);
         listOfReservations.add(reservation);
         return reservation;
