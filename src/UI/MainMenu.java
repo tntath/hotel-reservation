@@ -45,8 +45,8 @@ public class MainMenu {
                     findAndReserveARoom(hotelResource, customerEmail);
                 } else {
                     System.out.println("Please create an account first\n");
-                    selectOption(customerEmail);
                 }
+                selectOption(customerEmail);
                 break;
             case 2:
                 if (customerExists) {
@@ -61,8 +61,8 @@ public class MainMenu {
                     }
                 } else {
                     System.out.println("Please create an account first\n");
-                    selectOption(customerEmail);
                 }
+                selectOption(customerEmail);
                 break;
             case 3:
                 if (customerExists) {
