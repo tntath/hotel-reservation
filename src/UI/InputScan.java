@@ -19,14 +19,6 @@ public class InputScan {
      */
     public static int scanIntegerInput(int lowerLimit, int upperLimit) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("-----------------------------------------------");
-        System.out.println("Please select one option:");
-        System.out.println("""
-                1. Find and reserve a room\s
-                2. See my reservations
-                3. Create an account\s
-                4. Admin
-                5.Exit""");
 
         int userInput = 0;
         boolean wrongInput;
