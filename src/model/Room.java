@@ -48,7 +48,7 @@ public class Room implements IRoom{
 
     @Override
     public String toString() {
-        return "*Room {" +
+        return "Room {" +
                 "roomNumber='" + roomNumber + '\'' +
                 ", price=" + price +
                 ", Type=" + enumeration.label +
