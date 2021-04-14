@@ -24,7 +24,6 @@ public class InputScan {
      */
     public static int scanIntegerInput(int lowerLimit, int upperLimit) {
         Scanner scanner = new Scanner(System.in);
-
         int userInput = 0;
         boolean wrongInput;
 
@@ -58,7 +57,6 @@ public class InputScan {
         List<LocalDate> desiredDates = new ArrayList<>();
         LocalDate todayDate = LocalDate.now();
 
-
         System.out.println("Please enter the check in date in \"" + datePattern + "\" format");
         LocalDate checkInDate = scanDate(formatter, datePattern);
         System.out.println("Check In: " + checkInDate.format(formatter));
@@ -67,13 +65,13 @@ public class InputScan {
         LocalDate checkOutDate = scanDate(formatter, datePattern);
         System.out.println("Check Out: " + checkOutDate.format(formatter));
 
-        if(checkInDate.isAfter(todayDate.minusDays(1))) {
+        if (checkInDate.isBefore(todayDate)) {
             System.out.println("The check in date should not be before today. Please re-enter the dates.");
             desiredDates = scanCheckInDates(formatter, datePattern);
-        }else if(checkOutDate.isBefore(checkInDate)){
+        } else if (checkOutDate.isBefore(checkInDate)) {
             System.out.println("The check out date  should be after the check in date. Please re-enter the dates");
             desiredDates = scanCheckInDates(formatter, datePattern);
-        }else {
+        } else {
             desiredDates.add(checkInDate);
             desiredDates.add(checkOutDate);
         }
@@ -90,6 +88,7 @@ public class InputScan {
     public static LocalDate scanDate(DateTimeFormatter formatter, String datePattern) {
         Scanner scanner = new Scanner(System.in);
         LocalDate inputDate = LocalDate.now();
+
         boolean wrongInput;
         do {
             try {
@@ -114,8 +113,8 @@ public class InputScan {
     public static UserAnswer scanUserAnswer() {
         Scanner scanner = new Scanner(System.in);
         UserAnswer userAnswer = null;
-
         boolean wrongInput;
+
         do {
             try {
                 String answer = scanner.nextLine().toUpperCase();
@@ -173,6 +172,7 @@ public class InputScan {
 
     /**
      * Asks the admin user provide details of a new Room scans the user input.
+     *
      * @return An IRoom object (either Room or FreeRoom, depending on the user's input.
      */
     public static IRoom scanRoomDetails() {
@@ -181,7 +181,6 @@ public class InputScan {
         String roomNumber = null;
         Double roomPrice = null;
         RoomType roomType = null;
-
         boolean wrongInput;
         do {
             try {

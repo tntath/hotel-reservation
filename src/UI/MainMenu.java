@@ -8,6 +8,7 @@ import javax.management.InstanceAlreadyExistsException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
 import static UI.InputScan.*;
 import static UI.AdminMenu.*;
 
@@ -46,7 +47,7 @@ public class MainMenu {
                 if (customerExists) {
                     findAndReserveARoom(hotelResource, customerEmail);
                 } else {
-                    System.out.println("Please create an account first\n");
+                    System.out.println("Please create an account first");
                 }
                 selectOption(customerEmail);
                 break;
@@ -62,24 +63,24 @@ public class MainMenu {
                         }
                     }
                 } else {
-                    System.out.println("Please create an account first\n");
+                    System.out.println("Please create an account first");
                 }
                 selectOption(customerEmail);
                 break;
             case 3:
-                    //Ask the user for his details (email, First Name, Last Name)
-                    String[] newUserDetails = scanCustomerDetails();
-                    //Create a new Customer object if the customer does not already exist in database
-                    try {
-                        hotelResource.createACustomer(newUserDetails[0], newUserDetails[1], newUserDetails[2]);
-                    }catch (InstanceAlreadyExistsException ex) {
-                            System.out.println("User's email already in database. Please select another option.");
-                    }catch (IllegalArgumentException ex){
-                            System.out.println("Please enter a valid email address");
-                    }
-                    //redirect the user to select an option from Main Menu
-                    //(the new email is forwarded to the Main Menu with the variable newUserDetails[0])
-                    selectOption(newUserDetails[0]);
+                //Ask the user for his details (email, First Name, Last Name)
+                String[] newUserDetails = scanCustomerDetails();
+                //Create a new Customer object if the customer does not already exist in database
+                try {
+                    hotelResource.createACustomer(newUserDetails[0], newUserDetails[1], newUserDetails[2]);
+                } catch (InstanceAlreadyExistsException ex) {
+                    System.out.println("User's email already in database. Please select another option.");
+                } catch (IllegalArgumentException ex) {
+                    System.out.println("Please enter a valid email address");
+                }
+                //redirect the user to select an option from Main Menu
+                //(the new email is forwarded to the Main Menu with the variable newUserDetails[0])
+                selectOption(newUserDetails[0]);
                 break;
             case 4:
                 //open the admin menu
@@ -152,10 +153,10 @@ public class MainMenu {
      * @param availableRooms a list with the available rooms for a specific reservation
      */
     private static void makeAReservation(HotelResource hotelResource, String customerEmail, LocalDate checkInDate, LocalDate checkOutDate, Collection<IRoom> availableRooms) {
-        boolean wrongRoomSelection=false;
+        boolean wrongRoomSelection = false;
 
         // show the available rooms
-        System.out.println("The available rooms for the requested dates are: ");
+        System.out.println("\nThe available rooms for the requested dates are: ");
         for (IRoom room : availableRooms) {
             System.out.println(room);
         }
@@ -167,19 +168,19 @@ public class MainMenu {
             System.out.println("Please select a room number");
             String roomNumberSelected = scanRoomNumber();
             IRoom selectedRoom = hotelResource.getRoom(roomNumberSelected);
-            for(IRoom room:availableRooms) {
-                if(room.equals(selectedRoom)){
+            for (IRoom room : availableRooms) {
+                if (room.equals(selectedRoom)) {
                     Reservation customerReservation = hotelResource.bookARoom(customerEmail, selectedRoom, checkInDate, checkOutDate);
                     System.out.println("Your reservation is: " + customerReservation);
                     wrongRoomSelection = false;
                     break;
-                }else {
+                } else {
                     wrongRoomSelection = true;
                 }
             }
-            if(wrongRoomSelection){
+            if (wrongRoomSelection) {
                 System.out.println("This room is not available. Please select another room");
-                makeAReservation(hotelResource,customerEmail, checkInDate, checkOutDate, availableRooms);
+                makeAReservation(hotelResource, customerEmail, checkInDate, checkOutDate, availableRooms);
             }
             //Book a reservation for the selected room and dates
         } else {
