@@ -7,8 +7,22 @@ public class CustomerService {
     Map<String, Customer> mapOfCustomers = new HashMap<>();
     private static final CustomerService customerService = new CustomerService();
 
-    public void addCustomer(String email, String firstName, String lastName) {
-        mapOfCustomers.put(email, new Customer(firstName, lastName, email));
+    /**
+     * Service method. Adds a new Customer entry in the data structure. Checks if
+     * the custromer already exists and throws IllegalArgumentException.
+     * @throws IllegalArgumentException if customer already exists
+     * @param email
+     * @param firstName
+     * @param lastName
+     */
+    public void addCustomer (String email, String firstName, String lastName) {
+        Customer newCustomer = new Customer(firstName, lastName, email);
+        for(Customer customer: getAllCustomers()){
+            if(customer.equals(newCustomer)){
+                throw new IllegalArgumentException("Customer email already exists in database");
+            }
+        }
+        mapOfCustomers.put(email, newCustomer);
     }
 
     public Customer getCustomer(String customerEmail) {
