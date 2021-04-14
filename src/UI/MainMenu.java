@@ -65,16 +65,19 @@ public class MainMenu {
                 selectOption(customerEmail);
                 break;
             case 3:
-                if (customerExists) {
-                    System.out.println("Email already in use, please select another option");
-                    selectOption(customerEmail);
-                } else {
+//                if (customerExists) {
+//                    System.out.println("Email already in use, please select another option");
+//                    selectOption(customerEmail);
+//                } else {
                     //ask for the customer details and create an entry in the database
                     String[] newUserDetails = scanCustomerDetails();
-                    hotelResource.createACustomer(newUserDetails[0], newUserDetails[1], newUserDetails[2]);
+                    try {
+                        hotelResource.createACustomer(newUserDetails[0], newUserDetails[1], newUserDetails[2]);
+                    }catch (Exception ex) {
+                        System.out.println("User's email already in database. Please select another option.");
+                    }
                     //redirect the user to select an option from Main Menu
                     selectOption(newUserDetails[0]);
-                }
                 break;
             case 4:
                 System.out.println("Case 4");
@@ -103,8 +106,8 @@ public class MainMenu {
 
         //get the check in date and check out date from the user
         List<LocalDate> desiredDates = scanCheckInDates(formatter, datePattern);
-        LocalDate checkInDate = desiredDates.iterator().next();
-        LocalDate checkOutDate = desiredDates.iterator().next();
+        LocalDate checkInDate = desiredDates.get(0);
+        LocalDate checkOutDate = desiredDates.get(1);
         //get a list with all the available rooms for these dates
         Collection<IRoom> availableRooms = hotelResource.findARoom(checkInDate, checkOutDate);
         //Show the available rooms to the user and proceed with the reservation
@@ -148,6 +151,7 @@ public class MainMenu {
      * @param availableRooms a list with the available rooms for a specific reservation
      */
     private static void makeAReservation(HotelResource hotelResource, String customerEmail, LocalDate checkInDate, LocalDate checkOutDate, Collection<IRoom> availableRooms) {
+        boolean wrongRoomSelection=false;
 
         // show the available rooms
         System.out.println("The available rooms for the requested dates are: ");
@@ -161,10 +165,22 @@ public class MainMenu {
             //Get selected room from user
             System.out.println("Please select a room number");
             String roomNumberSelected = scanRoomNumber();
+            IRoom selectedRoom = hotelResource.getRoom(roomNumberSelected);
+            for(IRoom room:availableRooms) {
+                if(room.equals(selectedRoom)){
+                    Reservation customerReservation = hotelResource.bookARoom(customerEmail, selectedRoom, checkInDate, checkOutDate);
+                    System.out.println("Your reservation is: " + customerReservation);
+                    wrongRoomSelection = false;
+                    break;
+                }else {
+                    wrongRoomSelection = true;
+                }
+            }
+            if(wrongRoomSelection){
+                System.out.println("This room is not available. Please select another room");
+                makeAReservation(hotelResource,customerEmail, checkInDate, checkOutDate, availableRooms);
+            }
             //Book a reservation for the selected room and dates
-            IRoom roomSelected = hotelResource.getRoom(roomNumberSelected);
-            Reservation customerReservation = hotelResource.bookARoom(customerEmail, roomSelected, checkInDate, checkOutDate);
-            System.out.println("Your reservation is: " + customerReservation);
         } else {
             System.out.println("Please select new Check In and Check Out dates.");
             findAndReserveARoom(hotelResource, customerEmail);
