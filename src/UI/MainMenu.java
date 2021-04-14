@@ -3,6 +3,8 @@ package UI;
 import api.HotelResource;
 import model.IRoom;
 import model.Reservation;
+
+import javax.management.InstanceAlreadyExistsException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -27,7 +29,7 @@ public class MainMenu {
             customerExists = true;
         }
         // get the user Main Menu selection
-        System.out.println("-----------------------------------------------");
+        System.out.println("\n-----------------------------------------------");
         System.out.println("Please select one option:");
         System.out.println("""
                 1. Find and reserve a room\s
@@ -65,22 +67,21 @@ public class MainMenu {
                 selectOption(customerEmail);
                 break;
             case 3:
-//                if (customerExists) {
-//                    System.out.println("Email already in use, please select another option");
-//                    selectOption(customerEmail);
-//                } else {
-                    //ask for the customer details and create an entry in the database
+                    //Ask the user for his details (email, First Name, Last Name)
                     String[] newUserDetails = scanCustomerDetails();
+                    //Create a new Customer object if the customer does not already exist in database
                     try {
                         hotelResource.createACustomer(newUserDetails[0], newUserDetails[1], newUserDetails[2]);
-                    }catch (Exception ex) {
-                        System.out.println("User's email already in database. Please select another option.");
+                    }catch (InstanceAlreadyExistsException ex) {
+                            System.out.println("User's email already in database. Please select another option.");
+                    }catch (IllegalArgumentException ex){
+                            System.out.println("Please enter a valid email address");
                     }
                     //redirect the user to select an option from Main Menu
+                    //(the new email is forwarded to the Main Menu with the variable newUserDetails[0])
                     selectOption(newUserDetails[0]);
                 break;
             case 4:
-                System.out.println("Case 4");
                 //open the admin menu
                 selectAdminOption(customerEmail);
                 break;
