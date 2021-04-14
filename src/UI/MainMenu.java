@@ -120,17 +120,23 @@ public class MainMenu {
         //Show the available rooms to the user and proceed with the reservation
         if (availableRooms.isEmpty()) {
             System.out.println("There are no available rooms for these dates");
+
+            //Asks the user how many days later should be added to the search
+            System.out.println("How many days later should we search for?");
+            int additionalDays = scanAdditionalDays();
             //add seven days to the search
-            checkInDate = checkInDate.plusDays(7);
-            checkOutDate = checkOutDate.plusDays(7);
+            checkInDate = checkInDate.plusDays(additionalDays);
+            checkOutDate = checkOutDate.plusDays(additionalDays);
             // find a Room for the new dates
             Collection<IRoom> availableRoomsWeekLater = hotelResource.findARoom(checkInDate, checkOutDate, userPreferredCost);
             //restart the process if no available rooms are found or show the available ones for the new search
             if (availableRoomsWeekLater.isEmpty()) {
-                System.out.println("And unfortunately there are no available rooms a week later, please choose other dates");
+                System.out.println("Unfortunately there are no available rooms for these dates either. " +
+                        "( Check in: " + checkInDate.format(formatter) + " and Check out: " +checkOutDate.format(formatter) + ")");
+                System.out.println("Please select other dates.");
                 selectOption(customerEmail);
             } else {
-                System.out.println("However, there are available rooms a week later");
+                System.out.println("There are available rooms for these dates");
                 System.out.println("New Check in Date: " + checkInDate.format(formatter));
                 System.out.println("New Check Out Date: " + checkOutDate.format(formatter));
                 System.out.println("Should we proceed with these dates? (Yes/No answer)");
@@ -139,7 +145,7 @@ public class MainMenu {
                     makeAReservation(hotelResource, customerEmail, checkInDate, checkOutDate, availableRoomsWeekLater);
 
                 } else if (dateConfirmation == UserAnswer.NO) {
-                    System.out.println("Please select new Check In and Check Out dates.");
+                    System.out.println("Please select another option from the Main menu.");
                     selectOption(customerEmail);
                 }
             }
@@ -166,7 +172,7 @@ public class MainMenu {
             System.out.println(room);
         }
         //get user confirmation for these dates or redirect  him to choose new dates
-        System.out.println("Should we proceed with this reservation? (Yes/No answer)");
+        System.out.println("Should we proceed with one of these rooms? (Yes/No answer)");
         UserAnswer reservationConfirmation = scanUserAnswer();
         if (reservationConfirmation == UserAnswer.YES) {
             //Get selected room from user
