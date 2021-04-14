@@ -29,20 +29,6 @@ public class ReservationService {
     public Reservation reserveARoom(Customer customer, IRoom room, LocalDate checkInDate, LocalDate checkOutDate) {
         Reservation newReservation = new Reservation(customer, room, checkInDate, checkOutDate);
 
-//        //check if reservation exists and return the existing reservation
-//        for (Reservation reservation : listOfReservations) {
-//            if(reservation.equals(newReservation)) {
-//                System.out.println("This reservation already exists");
-//                return null;
-//            }else if(reservation.getRoom().equals(room) &&
-//                    reservation.
-//            ){
-//
-//            }
-//
-//        }
-        //Create new reservation and return it to the caller
-        newReservation = new Reservation(customer, room, checkInDate, checkOutDate);
         listOfReservations.add(newReservation);
         return newReservation;
     }
