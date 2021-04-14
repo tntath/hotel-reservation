@@ -1,8 +1,6 @@
 package service;
 
-import model.Customer;
-import model.IRoom;
-import model.Reservation;
+import model.*;
 
 import java.util.*;
 import java.time.LocalDate;
@@ -86,5 +84,43 @@ public class ReservationService {
     public static ReservationService getInstance() {
 
         return reservationService;
+    }
+
+    public void populateWithTestData(){
+        LocalDate todayDate = LocalDate.now();
+        CustomerService customerService = CustomerService.getInstance();
+
+        //create test data
+        Customer ann = new Customer("Anna", "First", "anna@email.com");
+        Customer benn = new Customer("Benn", "Second", "benn@email.com");
+        Customer cope = new Customer("Cope", "Third", "cope@email.com");
+
+        IRoom room1 = new Room("101", 120.0, RoomType.SINGLE);
+        IRoom room2 = new FreeRoom("102", RoomType.SINGLE);
+        IRoom room3 = new Room("200", 140.7, RoomType.DOUBLE);
+        IRoom room4 = new FreeRoom("201", RoomType.SINGLE);
+        IRoom room5 = new Room("303", 240.0, RoomType.DOUBLE);
+
+        Reservation reservation1 = new Reservation(ann, room1, LocalDate.of(2021, 4, 15), LocalDate.of(2021, 4, 22));
+        Reservation reservation2 = new Reservation(benn, room2, todayDate.plusDays(35), todayDate.plusDays(45));
+        Reservation reservation3 = new Reservation(cope, room5, todayDate.plusDays(35), todayDate.plusDays(45));
+        Reservation reservation4 = new Reservation(cope, room3, todayDate.plusDays(35), todayDate.plusDays(45));
+
+        //Add data in data structure
+        customerService.mapOfCustomers.put("anna@email.com", ann);
+        customerService.mapOfCustomers.put("benn@email.com", benn);
+        customerService.mapOfCustomers.put("cope@email.com", cope);
+
+        mapOfRooms.put("101", room1);
+        mapOfRooms.put("102", room2);
+        mapOfRooms.put("200", room3);
+        mapOfRooms.put("201", room4);
+        mapOfRooms.put("303", room5);
+
+        listOfReservations.add(reservation1);
+        listOfReservations.add(reservation2);
+        listOfReservations.add(reservation3);
+        listOfReservations.add(reservation4);
+
     }
 }

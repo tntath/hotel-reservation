@@ -1,8 +1,7 @@
 package UI;
 
 import api.AdminResource;
-import model.Customer;
-import model.IRoom;
+import model.*;
 import java.util.ArrayList;
 import java.util.List;
 import static UI.InputScan.*;
@@ -24,9 +23,10 @@ public class AdminMenu {
                 2. See all Rooms
                 3. See all Reservations\s
                 4. Add a Room
-                5. Back to Main Menu""");
+                5. Populate with test data
+                6. Back to Main Menu""");
 
-        int userSelection = scanIntegerInput(1, 5);
+        int userSelection = scanIntegerInput(1, 6);
         System.out.println("User Input: " + userSelection);
 
         // Give admin access only to certified users
@@ -62,10 +62,16 @@ public class AdminMenu {
                 selectAdminOption(userEmail);
                 break;
             case 5:
+                System.out.println("Populating with test data");
+                adminResource.populateWithTestData();
+                selectAdminOption(userEmail);
+                break;
+            case 6:
                 selectOption(userEmail);
 
         }
     }
+
 
     /**
      * A method that asks the admin user the details of the rooms he wishes to add.

@@ -39,4 +39,8 @@ public class AdminResource {
         reservationService.printAllReservation();
 
     }
+
+    public void populateWithTestData(){
+        reservationService.populateWithTestData();
+    }
 }
