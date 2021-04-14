@@ -56,6 +56,8 @@ public class InputScan {
      */
     public static List<LocalDate> scanCheckInDates(DateTimeFormatter formatter, String datePattern) {
         List<LocalDate> desiredDates = new ArrayList<>();
+        LocalDate todayDate = LocalDate.now();
+
 
         System.out.println("Please enter the check in date in \"" + datePattern + "\" format");
         LocalDate checkInDate = scanDate(formatter, datePattern);
@@ -65,9 +67,16 @@ public class InputScan {
         LocalDate checkOutDate = scanDate(formatter, datePattern);
         System.out.println("Check Out: " + checkOutDate.format(formatter));
 
-        desiredDates.add(checkInDate);
-        desiredDates.add(checkOutDate);
-
+        if(checkInDate.isAfter(todayDate.minusDays(1))) {
+            System.out.println("The check in date should not be before today. Please re-enter the dates.");
+            desiredDates = scanCheckInDates(formatter, datePattern);
+        }else if(checkOutDate.isBefore(checkInDate)){
+            System.out.println("The check out date  should be after the check in date. Please re-enter the dates");
+            desiredDates = scanCheckInDates(formatter, datePattern);
+        }else {
+            desiredDates.add(checkInDate);
+            desiredDates.add(checkOutDate);
+        }
         return desiredDates;
     }
 
