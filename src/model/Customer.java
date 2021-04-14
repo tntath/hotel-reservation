@@ -36,7 +36,7 @@ public class Customer {
         if (this == o) return true;
         if (!(o instanceof Customer)) return false;
         Customer customer = (Customer) o;
-        return getFirstName().equals(customer.getFirstName()) && getLastName().equals(customer.getLastName()) && getEmail().equals(customer.getEmail());
+        return getEmail().equals(customer.getEmail());
     }
 
     @Override
