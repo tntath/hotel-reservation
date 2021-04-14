@@ -1,6 +1,8 @@
 package service;
 
 import model.Customer;
+
+import javax.management.InstanceAlreadyExistsException;
 import java.util.*;
 
 public class CustomerService {
@@ -15,11 +17,11 @@ public class CustomerService {
      * @param firstName
      * @param lastName
      */
-    public void addCustomer (String email, String firstName, String lastName) {
+    public void addCustomer (String email, String firstName, String lastName) throws InstanceAlreadyExistsException {
         Customer newCustomer = new Customer(firstName, lastName, email);
         for(Customer customer: getAllCustomers()){
             if(customer.equals(newCustomer)){
-                throw new IllegalArgumentException("Customer email already exists in database");
+                throw new InstanceAlreadyExistsException("Customer email already exists in database");
             }
         }
         mapOfCustomers.put(email, newCustomer);
