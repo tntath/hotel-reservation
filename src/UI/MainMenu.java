@@ -160,7 +160,7 @@ public class MainMenu {
             System.out.println(room);
         }
         //get user confirmation for these dates or redirect  him to choose new dates
-        System.out.println("Should we proceed with these dates? (Yes/No answer)");
+        System.out.println("Should we proceed with this reservation? (Yes/No answer)");
         UserAnswer reservationConfirmation = scanUserAnswer();
         if (reservationConfirmation == UserAnswer.YES) {
             //Get selected room from user
