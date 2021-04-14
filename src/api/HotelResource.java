@@ -6,6 +6,7 @@ import model.Reservation;
 import service.CustomerService;
 import service.ReservationService;
 
+import javax.management.InstanceAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +28,7 @@ public class HotelResource {
 
     }
 
-    public void createACustomer(String email, String firstName, String lastName) {
+    public void createACustomer(String email, String firstName, String lastName) throws InstanceAlreadyExistsException, IllegalArgumentException {
         customerService.addCustomer(email, firstName, lastName);
     }
 
