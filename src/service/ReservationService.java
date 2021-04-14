@@ -26,13 +26,25 @@ public class ReservationService {
         return mapOfRooms.values();
     }
 
-    public Reservation reserveARoom(Customer customer, IRoom room, LocalDate checkInDate, LocalDate ckeckOutDate) {
-        //check if the customer exists!
+    public Reservation reserveARoom(Customer customer, IRoom room, LocalDate checkInDate, LocalDate checkOutDate) {
+        Reservation newReservation = new Reservation(customer, room, checkInDate, checkOutDate);
 
-        //check if reservation exists
-        Reservation reservation = new Reservation(customer, room, checkInDate, ckeckOutDate);
-        listOfReservations.add(reservation);
-        return reservation;
+//        //check if reservation exists and return the existing reservation
+//        for (Reservation reservation : listOfReservations) {
+//            if(reservation.equals(newReservation)) {
+//                System.out.println("This reservation already exists");
+//                return null;
+//            }else if(reservation.getRoom().equals(room) &&
+//                    reservation.
+//            ){
+//
+//            }
+//
+//        }
+        //Create new reservation and return it to the caller
+        newReservation = new Reservation(customer, room, checkInDate, checkOutDate);
+        listOfReservations.add(newReservation);
+        return newReservation;
     }
 
     public Collection<Reservation> getCustomersReservation(Customer customer) {
@@ -60,8 +72,19 @@ public class ReservationService {
     public Collection<IRoom> findARoom(LocalDate checkInDate, LocalDate checkOutDate) {
         List<IRoom> availableRooms = new LinkedList<>(mapOfRooms.values());
 
+        // check if the Check Out Date of the search is between the Check In Date and The Check Out Date
+        // of any other existing reservation and remove that reserved room from the list of
+        // available rooms
         for (Reservation reservation : listOfReservations) {
-            if (checkInDate == reservation.getCheckInDate()) {
+            if (checkInDate.isEqual(reservation.getCheckInDate()) ||
+                    checkOutDate.isEqual(reservation.getCheckOutDate()) ||
+                        (checkInDate.isAfter(reservation.getCheckInDate()) &&
+                            checkInDate.isBefore(reservation.getCheckOutDate()) )||
+                        (checkOutDate.isAfter(reservation.getCheckInDate()) &&
+                         checkOutDate.isBefore(reservation.getCheckOutDate())) ||
+                    (checkInDate.isBefore(reservation.getCheckInDate()) &&
+                            checkOutDate.isAfter(reservation.getCheckOutDate()))
+            ) {
                 availableRooms.remove(reservation.getRoom());
             }
         }
