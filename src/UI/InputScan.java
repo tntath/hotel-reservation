@@ -32,12 +32,13 @@ public class InputScan {
                 } else {
                     wrongInput = true;
                     System.out.println("Please enter a number between " + lowerLimit + " and " + upperLimit);
+                    scanner.nextLine();
                 }
             } catch (Exception ex) {
                 ex.getLocalizedMessage();
                 System.out.println("Please enter an integer number");
                 wrongInput = true;
-                String date = scanner.nextLine();
+                scanner.nextLine();
             }
         } while (wrongInput);
 
@@ -63,7 +64,7 @@ public class InputScan {
         System.out.println("Check Out: " + checkOutDate.format(formatter));
 
         if (checkInDate.isBefore(todayDate)) {
-            System.out.println("The check in date should not be before today. Please re-enter the dates.");
+            System.out.println("The check in date should not be in the past. Please re-enter the dates.");
             desiredDates = scanCheckInDates(formatter, datePattern);
         } else if (checkOutDate.isBefore(checkInDate)) {
             System.out.println("The check out date  should be after the check in date. Please re-enter the dates");
@@ -230,5 +231,29 @@ public class InputScan {
 
         return roomCost;
 
+    }
+
+    /**
+     * Scans the input and gets an integer from the user.
+     * @return The integer provided by the user.
+     */
+    public static int scanAdditionalDays(){
+        Scanner scanner = new Scanner(System.in);
+        int userInput = 0;
+        boolean wrongInput;
+
+        do {
+            try {
+                userInput = scanner.nextInt();
+                wrongInput = false;
+            } catch (Exception ex) {
+                ex.getLocalizedMessage();
+                System.out.println("Please enter an integer number");
+                wrongInput = true;
+                scanner.nextLine();
+            }
+        } while (wrongInput);
+
+        return userInput;
     }
 }
