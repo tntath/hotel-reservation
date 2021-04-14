@@ -17,7 +17,7 @@ public class AdminMenu {
         //future implementation, check if user is admin
 
         // get the user Main Menu selection
-        System.out.println("-----------------------------------------------");
+        System.out.println("\n-----------------------------------------------");
         System.out.println("Please select one option:");
         System.out.println("""
                 1. See all Customers\s
