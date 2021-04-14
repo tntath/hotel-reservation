@@ -3,6 +3,8 @@ package UI;
 import api.HotelResource;
 import model.IRoom;
 import model.Reservation;
+import model.RoomCost;
+import model.UserAnswer;
 
 import javax.management.InstanceAlreadyExistsException;
 import java.time.LocalDate;
@@ -110,8 +112,11 @@ public class MainMenu {
         List<LocalDate> desiredDates = scanCheckInDates(formatter, datePattern);
         LocalDate checkInDate = desiredDates.get(0);
         LocalDate checkOutDate = desiredDates.get(1);
+        //ask the user if he wants to find only Free Rooms
+        System.out.println("Would you like to find Free rooms, Paid rooms, or both?");
+        RoomCost userPreferredCost = scanRoomPreferredCost();
         //get a list with all the available rooms for these dates
-        Collection<IRoom> availableRooms = hotelResource.findARoom(checkInDate, checkOutDate);
+        Collection<IRoom> availableRooms = hotelResource.findARoom(checkInDate, checkOutDate, userPreferredCost);
         //Show the available rooms to the user and proceed with the reservation
         if (availableRooms.isEmpty()) {
             System.out.println("There are no available rooms for these dates");
@@ -119,7 +124,7 @@ public class MainMenu {
             checkInDate = checkInDate.plusDays(7);
             checkOutDate = checkOutDate.plusDays(7);
             // find a Room for the new dates
-            Collection<IRoom> availableRoomsWeekLater = hotelResource.findARoom(checkInDate, checkOutDate);
+            Collection<IRoom> availableRoomsWeekLater = hotelResource.findARoom(checkInDate, checkOutDate, userPreferredCost);
             //restart the process if no available rooms are found or show the available ones for the new search
             if (availableRoomsWeekLater.isEmpty()) {
                 System.out.println("And unfortunately there are no available rooms a week later, please choose other dates");

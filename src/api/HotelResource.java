@@ -1,5 +1,6 @@
 package api;
 
+import model.RoomCost;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
@@ -7,9 +8,7 @@ import service.CustomerService;
 import service.ReservationService;
 
 import javax.management.InstanceAlreadyExistsException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.time.LocalDate;
 
 /*
@@ -46,8 +45,8 @@ public class HotelResource {
         return reservationService.getCustomersReservation(customer);
     }
 
-    public Collection<IRoom> findARoom(LocalDate checkIn, LocalDate checkOut) {
-        return reservationService.findARoom(checkIn, checkOut);
+    public Collection<IRoom> findARoom(LocalDate checkIn, LocalDate checkOut, RoomCost userPreferredCost) {
+        return reservationService.findARoom(checkIn, checkOut, userPreferredCost);
     }
 
     public static HotelResource getInstance() {

@@ -1,4 +1,4 @@
-package UI;
+package model;
 
 public enum UserAnswer {
     YES,

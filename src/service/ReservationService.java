@@ -53,8 +53,15 @@ public class ReservationService {
      * @param checkOutDate the date for checking out
      * @return a list of Rooms available for the selected dates
      */
-    public Collection<IRoom> findARoom(LocalDate checkInDate, LocalDate checkOutDate) {
+    public Collection<IRoom> findARoom(LocalDate checkInDate, LocalDate checkOutDate, RoomCost userPreferredCost) {
         List<IRoom> availableRooms = new LinkedList<>(mapOfRooms.values());
+
+        //Remove Free or Paid room, according to user's selection
+        if(userPreferredCost == RoomCost.PAID){
+            availableRooms.removeIf(IRoom::isFree);
+        }else if(userPreferredCost == RoomCost.FREE){
+            availableRooms.removeIf(room -> !room.isFree());
+        }
 
         // check if the Check Out Date of the search is between the Check In Date and The Check Out Date
         // of any other existing reservation and remove that reserved room from the list of

@@ -1,9 +1,6 @@
 package UI;
 
-import model.FreeRoom;
-import model.IRoom;
-import model.Room;
-import model.RoomType;
+import model.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -207,5 +204,31 @@ public class InputScan {
             newRoom = new FreeRoom(roomNumber, roomType);
         }
         return newRoom;
+    }
+
+    /**
+     * A method that converts the user input to RoomCost Enum
+     * @return the user's answer regarding the preferred cost in the RoomCost Enum type.
+     */
+    public static RoomCost scanRoomPreferredCost(){
+        Scanner scanner = new Scanner(System.in);
+        RoomCost roomCost = null;
+
+        boolean wrongInput;
+
+        do {
+            try {
+                String answer = scanner.nextLine().toUpperCase();
+                roomCost = RoomCost.valueOf(answer);
+                wrongInput = false;
+            } catch (Exception ex) {
+                ex.getLocalizedMessage();
+                System.out.println("Please enter the correct answer format (Free, Paid, or Both)");
+                wrongInput = true;
+            }
+        } while (wrongInput);
+
+        return roomCost;
+
     }
 }
