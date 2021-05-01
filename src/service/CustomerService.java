@@ -5,7 +5,7 @@ import model.Customer;
 import javax.management.InstanceAlreadyExistsException;
 import java.util.*;
 
-public class CustomerService {
+public final class CustomerService {
     Map<String, Customer> mapOfCustomers = new HashMap<>();
     private static final CustomerService customerService = new CustomerService();
 

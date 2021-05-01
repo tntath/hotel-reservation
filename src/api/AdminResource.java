@@ -8,7 +8,7 @@ import service.ReservationService;
 import java.util.Collection;
 import java.util.List;
 
-public class AdminResource {
+public final class AdminResource {
     private static final AdminResource adminResource = new AdminResource();
     private CustomerService customerService = CustomerService.getInstance();
     private ReservationService reservationService = ReservationService.getInstance();

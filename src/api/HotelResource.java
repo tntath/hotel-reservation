@@ -16,7 +16,7 @@ import java.time.LocalDate;
     inside the class and should make use of the Service classes to implement
     its methods
  */
-public class HotelResource {
+public final class HotelResource {
     private static final HotelResource hotelResource = new HotelResource();
     private CustomerService customerService = CustomerService.getInstance();
     private ReservationService reservationService = ReservationService.getInstance();

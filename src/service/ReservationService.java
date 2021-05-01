@@ -5,7 +5,7 @@ import model.*;
 import java.util.*;
 import java.time.LocalDate;
 
-public class ReservationService {
+public final class ReservationService {
 
     private Map<String, IRoom> mapOfRooms = new HashMap<>();
     private List<Reservation> listOfReservations = new ArrayList<Reservation>();
